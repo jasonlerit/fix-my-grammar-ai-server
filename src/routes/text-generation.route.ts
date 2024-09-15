@@ -3,6 +3,6 @@ import * as TextGenerationController from "@/controllers/text-generation.control
 
 const router = express.Router()
 
-router.get("/", TextGenerationController.index)
+router.post("/", TextGenerationController.index)
 
 export default router
