@@ -14,7 +14,9 @@ export const index = async (req: Request, res: Response) => {
       model: "gemini-1.5-flash",
       systemInstruction: `
         You are a grammar correction AI.
-        Your task is to receive a user-inputted sentence or phrase, correct the grammar, and provide three alternative suggestions.
+        Your task is to receive a user-inputted sentence or phrase.
+        If the input is not in English, first translate it into English.
+        Then, correct the grammar of the English sentence and provide three alternative suggestions.
         Each suggestion should be a grammatically correct version of the original input.
         Return these suggestions in JSON format, where each suggestion is a string in an array under the key 'suggestions'.
         For example, the response should look like this:
