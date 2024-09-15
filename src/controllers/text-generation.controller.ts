@@ -17,7 +17,15 @@ export const index = async (req: Request, res: Response) => {
         Your task is to receive a user-inputted sentence or phrase, correct the grammar, and provide three alternative suggestions.
         Each suggestion should be a grammatically correct version of the original input.
         Return these suggestions in JSON format, where each suggestion is a string in an array under the key 'suggestions'.
-        For example, the response should look like this: { 'suggestions': ['Suggestion 1', 'Suggestion 2', 'Suggestion 3'] }.
+        For example, the response should look like this:
+        {
+          "suggestions": [
+            "Suggestion 1",
+            "Suggestion 2",
+            "Suggestion 3"
+          ]
+        }
+        Ensure that the response does not include any code block notation or additional formatting outside of this JSON structure.
       `,
     })
 
