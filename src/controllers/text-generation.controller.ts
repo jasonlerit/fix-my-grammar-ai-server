@@ -5,9 +5,9 @@ import { ZodError } from "zod"
 
 export const index = async (req: Request, res: Response) => {
   try {
-    textGenerationSchema.parse(req.query)
+    textGenerationSchema.parse(req.body)
 
-    const { prompt } = req.query
+    const { prompt } = req.body
 
     const genAI = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY ?? "")
     const model = genAI.getGenerativeModel({
