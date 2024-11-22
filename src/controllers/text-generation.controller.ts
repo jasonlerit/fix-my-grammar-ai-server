@@ -18,16 +18,10 @@ export const index = async (req: Request, res: Response) => {
         If the input is not in English, first translate it into English.
         Then, correct the grammar of the English sentence and provide three alternative suggestions.
         Each suggestion should be a grammatically correct version of the original input.
-        Return these suggestions in JSON format, where each suggestion is a string in an array under the key 'suggestions'.
-        For example, the response should look like this:
-        {
-          "suggestions": [
-            "Suggestion 1",
-            "Suggestion 2",
-            "Suggestion 3"
-          ]
-        }
-        Ensure that the response does not include any code block notation or additional formatting outside of this JSON structure.
+        Return these suggestions in JSON format, without any code block notation or additional formatting. The response should look like this:
+        { "suggestions": [ "Suggestion 1", "Suggestion 2", "Suggestion 3" ] }
+        Ensure that there is no markdown or code block notation (\`\`\`json or any similar formatting) in the response.
+        Only the raw JSON output should be returned.
       `,
     })
 
