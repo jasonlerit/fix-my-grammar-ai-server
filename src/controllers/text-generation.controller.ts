@@ -1,4 +1,4 @@
-import { FIX_COMMIT_MESSAGE_PROMPT, FIX_GRAMMAR_PROMPT } from "@/common/constants/promp.constant"
+import { FIX_COMMIT_MESSAGE_PROMPT, FIX_GRAMMAR_PROMPT } from "@/common/constants/prompt.constant"
 import { TextGenerationType } from "@/common/types/text-generation.type"
 import { textGenerationSchema } from "@/utils/text-generation.schema"
 import { GoogleGenerativeAI } from "@google/generative-ai"
@@ -14,7 +14,7 @@ export const index = async (req: Request, res: Response) => {
     const genAI = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY ?? "")
     const model = genAI.getGenerativeModel({
       model: "gemini-1.5-flash",
-      systemInstruction: getPrompt(TextGenerationType.FIX_COMMIT_MESSAGE),
+      systemInstruction: getPrompt(type as TextGenerationType),
     })
 
     const result = await model.generateContent(prompt as string)
