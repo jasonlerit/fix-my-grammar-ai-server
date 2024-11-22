@@ -1,3 +1,5 @@
+import { FIX_COMMIT_MESSAGE_PROMPT, FIX_GRAMMAR_PROMPT } from "@/common/constants/promp.constant"
+import { TextGenerationType } from "@/common/types/text-generation.type"
 import { textGenerationSchema } from "@/utils/text-generation.schema"
 import { GoogleGenerativeAI } from "@google/generative-ai"
 import { type Request, type Response } from "express"
@@ -7,22 +9,12 @@ export const index = async (req: Request, res: Response) => {
   try {
     textGenerationSchema.parse(req.body)
 
-    const { prompt } = req.body
+    const { prompt, type } = req.body
 
     const genAI = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY ?? "")
     const model = genAI.getGenerativeModel({
       model: "gemini-1.5-flash",
-      systemInstruction: `
-        You are a grammar correction AI.
-        Your task is to receive a user-inputted sentence or phrase.
-        If the input is not in English, first translate it into English.
-        Then, correct the grammar of the English sentence and provide three alternative suggestions.
-        Each suggestion should be a grammatically correct version of the original input.
-        Return these suggestions in JSON format, without any code block notation or additional formatting. The response should look like this:
-        { "suggestions": [ "Suggestion 1", "Suggestion 2", "Suggestion 3" ] }
-        Ensure that there is no markdown or code block notation (\`\`\`json or any similar formatting) in the response.
-        Only the raw JSON output should be returned.
-      `,
+      systemInstruction: getPrompt(TextGenerationType.FIX_COMMIT_MESSAGE),
     })
 
     const result = await model.generateContent(prompt as string)
@@ -38,4 +30,11 @@ export const index = async (req: Request, res: Response) => {
     }
     return res.status(500).json({ message: "Internal server error" })
   }
+}
+
+const getPrompt = (type = TextGenerationType.FIX_GRAMMAR) => {
+  if (type === TextGenerationType.FIX_COMMIT_MESSAGE) {
+    return FIX_COMMIT_MESSAGE_PROMPT
+  }
+  return FIX_GRAMMAR_PROMPT
 }
