@@ -1,7 +1,7 @@
 import { FIX_COMMIT_MESSAGE_PROMPT, FIX_GRAMMAR_PROMPT } from "@/common/constants/prompt.constant"
 import { TextGenerationType } from "@/common/types/text-generation.type"
 import { textGenerationSchema } from "@/utils/text-generation.schema"
-import { GoogleGenerativeAI } from "@google/generative-ai"
+import { GoogleGenerativeAI, SchemaType } from "@google/generative-ai"
 import { type Request, type Response } from "express"
 import { ZodError } from "zod"
 
@@ -15,6 +15,21 @@ export const index = async (req: Request, res: Response) => {
     const model = genAI.getGenerativeModel({
       model: "gemini-1.5-flash",
       systemInstruction: getPrompt(type as TextGenerationType),
+      generationConfig: {
+        responseMimeType: "application/json",
+        responseSchema: {
+          type: SchemaType.OBJECT,
+          properties: {
+            suggestions: {
+              description: "List of suggestions",
+              type: SchemaType.ARRAY,
+              items: {
+                type: SchemaType.STRING,
+              },
+            },
+          },
+        },
+      },
     })
 
     const result = await model.generateContent(prompt as string)
